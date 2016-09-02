@@ -16,8 +16,19 @@ source = ['/home/victor/WORKSPACE/PYTHON/Other']
 # резервные копии должны храниться в специально отведённом каталоге
 target_dir = '/media/victor/Data/Backup/local'
 
-# файлы и папки помещаются в zip-архив, имя которого - дата и время.
-target = target_dir + os.sep + time.strftime('%Y%m%d-%H%M%S') + '.zip'
+# файлы и папки помещаются в zip-архив
+# текущая дата служит именем подкаталога
+today = target_dir + os.sep + time.strftime('%Y%m%d')
+# текущее время - имя zip-архива
+now = time.strftime('%H%M%S')
+
+# каталог должен существовать
+if not os.path.exists(today):
+    os.mkdir(today)
+    print('Каталог успешно создан:', today)
+
+# имя zip-архива
+target = today + os.sep + now + '.zip'
 
 # для архивирования используется команда zip
 zip_command = 'zip -qr {0} {1}'.format(target, ' '.join(source))
