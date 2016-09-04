@@ -2,6 +2,7 @@ import os
 import time
 
 # файлы и каталоги, которые необходимо скопировать, собираются в список
+# для имён, содержащих пробелы, нужно использовать двочные кавычки или raw-string
 source = ['/home/victor/.bash_history',
           '/home/victor/.profile',
           '/home/victor/.python_history',
@@ -22,13 +23,19 @@ today = target_dir + os.sep + time.strftime('%Y%m%d')
 # текущее время - имя zip-архива
 now = time.strftime('%H%M%S')
 
+# имя zip-архива должно содержать время
+# пользователь может добавить к имени архива комментарий
+comment = input('Введите комментарий (""): ')
+if len(comment) == 0:
+    target = today + os.sep + now + '.zip'
+else:
+    target = today + os.sep + now + \
+        '_' + comment.replace(' ', '_') + '.zip'
+
 # каталог должен существовать
 if not os.path.exists(today):
     os.mkdir(today)
     print('Каталог успешно создан:', today)
-
-# имя zip-архива
-target = today + os.sep + now + '.zip'
 
 # для архивирования используется команда zip
 zip_command = 'zip -qr {0} {1}'.format(target, ' '.join(source))
